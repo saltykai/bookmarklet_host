@@ -112,12 +112,35 @@
     container.appendChild(title);
 
     const credit = document.createElement("div");
-    credit.textContent = "Developed by Shiota";
+    credit.textContent = "Developed by SHIOTA";
     credit.style.textAlign = "center";
     credit.style.fontSize = "10px";
     credit.style.color = "#666";
     credit.style.marginBottom = "6px";
     container.appendChild(credit);
+
+     // スタイル
+    const style = document.createElement("style");
+    style.textContent = `
+      #chargeCodeTable button {
+        background:#fff;
+        color:#007BFF;
+        font-weight:bold;
+        border:1px solid #007BFF;
+        border-radius:4px;
+        padding:8px 16px;
+        font-size:14px;
+        cursor:pointer
+      }
+      #chargeCodeTable button:hover {
+        background:#007BFF;
+        color:#fff
+      }
+      #chargeCodeTable input::placeholder {
+        color:#aaa
+      }
+    `;
+    document.head.appendChild(style);
 
     const table = document.createElement("table");
     table.style.borderCollapse = "collapse";
