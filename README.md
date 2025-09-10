@@ -27,9 +27,9 @@
 ---
 
 ## 📁 ファイル構成
-bookmarklet.js         # 機能本体
-bookmarklet_loader.js  # 呼び出しファイル
-README.md              # この説明ファイル
+- bookmarklet.js         # 機能本体
+- bookmarklet_loader.js  # 呼び出しファイル
+- README.md              # この説明ファイル
 
 ---
 
