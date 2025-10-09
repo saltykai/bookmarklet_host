@@ -66,6 +66,18 @@
   // 自宅チェックを実行
   selectHomeLightweight();
 
+  // 開始時刻を0900に設定
+  const timeInputs = document.querySelectorAll('input[data-testid="time-picker-input-area"]');
+  const startTimeInput = timeInputs[0], endTimeInput = timeInputs[1];
+  if (startTimeInput) {
+    startTimeInput.scrollIntoView({ block: "center" });
+    startTimeInput.focus();
+    SNV(startTimeInput, "0900");
+    fire(startTimeInput, "input");
+    fire(startTimeInput, "change");
+    focusAway(startTimeInput);
+  }
+
   try {
     // チャージコードを抽出
     const spans = document.querySelectorAll("span");
@@ -104,12 +116,36 @@
     container.style.overflowY = "auto";
 
     const title = document.createElement("div");
-    title.textContent = "勤務時間自動入力";
+    title.textContent = "勤務時間自動入力 v1.0.1";
     title.style.textAlign = "center";
     title.style.fontWeight = "bold";
     title.style.fontSize = "16px";
     title.style.marginBottom = "12px";
     container.appendChild(title);
+
+    // バグ修正メッセージを追加
+    const updateNotice = document.createElement("div");
+    updateNotice.textContent = "バグ修正：開始時刻入力を調整しました(10/9)";
+    updateNotice.style.textAlign = "center";
+    updateNotice.style.backgroundColor = "#fffae6";
+    updateNotice.style.color = "#333";
+    updateNotice.style.border = "1px solid #f0c36d";
+    updateNotice.style.borderRadius = "8px";
+    updateNotice.style.padding = "6px 10px";
+    updateNotice.style.fontSize = "13px";
+    updateNotice.style.marginBottom = "12px";
+    updateNotice.style.boxShadow = "0 1px 3px rgba(0,0,0,0.1)";
+    updateNotice.style.animation = "fadeIn 0.8s ease";
+    container.appendChild(updateNotice);
+
+    // アニメーション定義
+    const styleTag = document.createElement("style");
+    styleTag.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }`;
+    document.head.appendChild(styleTag);
 
     const credit = document.createElement("div");
     credit.textContent = "Developed by SHIOTA";
@@ -237,19 +273,7 @@
         }
       }
 
-      // 開始時刻を0900に設定
-      const timeInputs = document.querySelectorAll('input[data-testid="time-picker-input-area"]');
-      const startTimeInput = timeInputs[0], endTimeInput = timeInputs[1];
-      if (startTimeInput) {
-        startTimeInput.scrollIntoView({ block: "center" });
-        startTimeInput.focus();
-        SNV(startTimeInput, "0900");
-        fire(startTimeInput, "input");
-        fire(startTimeInput, "change");
-        focusAway(startTimeInput);
-      }
-
-      // 終了時刻を計算（関与時間合計 + 休憩1時間）
+            // 終了時刻を計算（関与時間合計 + 休憩1時間）
       const startHour = 9, startMinute = 0;
       let endTotal = startHour * 60 + startMinute + totalMinutes + 60;
       let endHour = Math.floor(endTotal / 60), endMinute = endTotal % 60;
