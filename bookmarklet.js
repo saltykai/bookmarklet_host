@@ -323,7 +323,7 @@
     container.style.overflowY = "auto";
 
     const title = document.createElement("div");
-    title.textContent = "勤務時間自動入力 v1.2.5";
+    title.textContent = "勤務時間自動入力 v1.2.6";
     title.style.textAlign = "center";
     title.style.fontWeight = "bold";
     title.style.fontSize = "15px";
@@ -332,7 +332,7 @@
 
     // バグ修正メッセージを追加
     const updateNotice = document.createElement("div");
-    updateNotice.textContent = "新機能：乖離理由の自動選択など (11/17)";
+    updateNotice.textContent = "新機能：乖離理由の自動選択など (2026/11/19)";
     updateNotice.style.textAlign = "center";
     updateNotice.style.backgroundColor = "#fffae6";
     updateNotice.style.color = "#333";
@@ -393,13 +393,29 @@
     const startLabel = document.createElement("label");
     startLabel.textContent = "開始 ";
     startLabel.style.fontWeight = "bold";
-    const startPicker = document.createElement("input");
-    startPicker.type = "time";
-    startPicker.step = "900";
-    startPicker.value = DEFAULT_START;
-    startPicker.style.fontSize = "13px";
-    startPicker.style.padding = "1px 2px";
-    startLabel.appendChild(startPicker);
+    // 時・分のプルダウン（分は 00 / 15 / 30 / 45 の順）
+    const [defH, defM] = DEFAULT_START.split(":");
+    const makeSelect = (values, def) => {
+      const sel = document.createElement("select");
+      sel.style.fontSize = "13px";
+      sel.style.padding = "1px 2px";
+      values.forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        if (v === def) o.selected = true;
+        sel.appendChild(o);
+      });
+      return sel;
+    };
+    const hourSel = makeSelect(Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")), defH);
+    const minSel = makeSelect(["00", "15", "30", "45"], defM);
+    const colon = document.createElement("span");
+    colon.textContent = ":";
+    startLabel.appendChild(hourSel);
+    startLabel.appendChild(colon);
+    startLabel.appendChild(minSel);
+    const startPicker = { get value() { return hourSel.value + ":" + minSel.value; } };
     optRow.appendChild(startLabel);
 
     // 乖離理由の設定表示（長い理由は省略表示、マウスを乗せると全文。保存済みの理由は「変更」でクリア）
